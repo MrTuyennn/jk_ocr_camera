@@ -1,4 +1,3 @@
-## 0.1.0
+## 1.0.0
 
-- Bản đầu: `scanCard()` mở màn hình quét giấy tờ offline (khung 16:9, báo lỗi realtime, nút chụp),
-  trả ảnh + dòng chữ OCR + QR CCCD.
+- Bản phát hành đầu tiên, đi cùng `jk_ocr_camera` 1.0.0.

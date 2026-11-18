@@ -1,5 +1,8 @@
 # jk_ocr_camera
 
+[![pub package](https://img.shields.io/pub/v/jk_ocr_camera.svg)](https://pub.dev/packages/jk_ocr_camera)
+[![license: MIT](https://img.shields.io/badge/license-MIT-purple.svg)](https://opensource.org/licenses/MIT)
+
 Flutter plugin quét giấy tờ tùy thân Việt Nam và OCR **chạy offline hoàn toàn**: không gọi backend, không tải model,
 không cần mạng.
 
@@ -33,47 +36,44 @@ App **chỉ** cần thêm `jk_ocr_camera`; hai package nền tảng được ch�
 
 ## Cài đặt
 
-Package phân phối qua **git**, không qua pub.dev. Cả 4 package nằm chung một repo:
+### Bước 1: thêm package
 
-```
-jk_ocr_camera/                           ← gốc repo https://github.com/MrTuyennn/jk_ocr_camera
-├── jk_ocr_camera/                       ← package app dùng (+ example/)
-├── jk_ocr_camera_platform_interface/
-├── jk_ocr_camera_android/
-├── jk_ocr_camera_ios/
-└── tool/sync_native.sh
+```sh
+flutter pub add jk_ocr_camera
 ```
 
-### Bước 1: thêm dependency vào `pubspec.yaml` của app
+hoặc thêm thủ công vào `pubspec.yaml` của app:
 
 ```yaml
 dependencies:
-  jk_ocr_camera:
-    git:
-      url: https://github.com/MrTuyennn/jk_ocr_camera.git
-      ref: v0.1.0                  # nên ghim theo tag; hoặc tên nhánh, vd. main
-      path: jk_ocr_camera
+  jk_ocr_camera: ^1.0.0
 ```
 
-> `jk_ocr_camera` tham chiếu 3 package còn lại bằng đường dẫn tương đối (`../jk_ocr_camera_android`...). Pub tải
-> **nguyên repo** khi cài từ git nên các đường dẫn này vẫn đúng. Đừng chỉ copy riêng thư mục `jk_ocr_camera`.
-
-> Nếu repo để **private**: máy build (và CI) phải có quyền đọc repo, vì pub dùng `git` để tải. Dùng SSH thì đổi
-> `url` thành `git@github.com:MrTuyennn/jk_ocr_camera.git` và cấu hình SSH key cho máy / CI.
-
-Hoặc khi phát triển cùng máy:
-
-```yaml
-dependencies:
-  jk_ocr_camera:
-    path: /đường/dẫn/tới/repo-clone/jk_ocr_camera
-```
+> Chỉ cần `jk_ocr_camera`. Ba package `jk_ocr_camera_platform_interface`, `jk_ocr_camera_android`,
+> `jk_ocr_camera_ios` được kéo theo tự động.
 
 ### Bước 2: chạy
 
 ```sh
 flutter pub get
 ```
+
+<details>
+<summary>Cài trực tiếp từ GitHub (vd. để dùng bản chưa phát hành)</summary>
+
+```yaml
+dependencies:
+  jk_ocr_camera:
+    git:
+      url: https://github.com/MrTuyennn/jk_ocr_camera.git
+      ref: main                    # hoặc một tag, vd. v1.0.0
+      path: jk_ocr_camera
+```
+
+Lưu ý: cách này chỉ lấy package `jk_ocr_camera` từ GitHub; 3 package nền tảng vẫn được tải từ pub.dev theo
+version trong `pubspec.yaml`.
+
+</details>
 
 ---
 
@@ -279,7 +279,8 @@ Mã native thật (Kotlin / Swift) nằm ở **repo SDK native riêng** (thư m�
 - Android: repo Maven cục bộ `jk_ocr_camera_android/android/maven/`.
 - iOS: bản sao nguồn trong `jk_ocr_camera_ios/ios/jk_ocr_camera_ios/Sources/jk_ocr_camera_ios/OcrSdk` và `Resources`.
 
-Sau khi sửa SDK native, từ gốc repo này chạy lại rồi commit các thư mục được sinh ra:
+Sau khi sửa SDK native, từ gốc repo [jk_ocr_camera](https://github.com/MrTuyennn/jk_ocr_camera) chạy lại rồi commit
+các thư mục được sinh ra:
 
 ```sh
 ./tool/sync_native.sh /đường/dẫn/tới/repo-native

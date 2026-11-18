@@ -2,8 +2,10 @@
 
 Flutter plugin quét giấy tờ tùy thân Việt Nam và OCR **offline**, dạng federated plugin gồm 4 package.
 
+[![pub package](https://img.shields.io/pub/v/jk_ocr_camera.svg)](https://pub.dev/packages/jk_ocr_camera)
+
+- pub.dev: <https://pub.dev/packages/jk_ocr_camera>
 - Repo: <https://github.com/MrTuyennn/jk_ocr_camera>
-- Clone: `git clone https://github.com/MrTuyennn/jk_ocr_camera.git`
 
 **Hướng dẫn cài đặt và sử dụng: [jk_ocr_camera/README.md](jk_ocr_camera/README.md).**
 
@@ -17,26 +19,21 @@ Flutter plugin quét giấy tờ tùy thân Việt Nam và OCR **offline**, dạ
 
 ## Cài vào app
 
-```yaml
-dependencies:
-  jk_ocr_camera:
-    git:
-      url: https://github.com/MrTuyennn/jk_ocr_camera.git
-      ref: v0.1.0
-      path: jk_ocr_camera
+```sh
+flutter pub add jk_ocr_camera
 ```
 
 ## Phát triển trong repo
 
+Repo dùng **pub workspace** (`pubspec.yaml` ở gốc, Dart 3.6+). Các package phụ thuộc nhau theo version
+(`jk_ocr_camera_platform_interface: ^1.0.0`), nhưng trong workspace pub lấy luôn bản trong repo, không tải từ pub.dev.
+
 ### Lần đầu sau khi clone
 
-Mỗi package có `pubspec.yaml` riêng, nên chạy `pub get` cho từng package (nếu không, IDE sẽ báo không tìm thấy
-`package:flutter_lints/flutter.yaml`):
-
 ```sh
-for p in jk_ocr_camera_platform_interface jk_ocr_camera_android jk_ocr_camera_ios jk_ocr_camera jk_ocr_camera/example; do
-  (cd "$p" && flutter pub get)
-done
+git clone https://github.com/MrTuyennn/jk_ocr_camera.git
+cd jk_ocr_camera
+flutter pub get          # một lần ở gốc là đủ cho cả 4 package + example
 ```
 
 ### Chạy app ví dụ
@@ -66,16 +63,43 @@ git add jk_ocr_camera_android/android/maven jk_ocr_camera_ios/ios
 - `jk_ocr_camera_android/android/maven/`
 - `jk_ocr_camera_ios/ios/jk_ocr_camera_ios/Sources/jk_ocr_camera_ios/OcrSdk/` và `Resources/`
 
-### Phát hành phiên bản mới
+### Phát hành phiên bản mới lên pub.dev
 
-1. Tăng `version` trong `pubspec.yaml` của các package đã đổi, và ghi `CHANGELOG.md`.
-2. Nếu sửa SDK native: chạy `tool/sync_native.sh` (bước trên).
-3. `flutter analyze` sạch, chạy thử `example` trên Android và iOS.
-4. Commit, tạo tag rồi push:
+Yêu cầu: đã đăng nhập pub.dev (`dart pub login`) bằng tài khoản Google sở hữu package.
+
+1. Tăng `version` (giữ **cùng một version** cho cả 4 package cho dễ theo dõi) và cập nhật các ràng buộc
+   `jk_ocr_camera_*: ^x.y.z` trong `jk_ocr_camera_android`, `jk_ocr_camera_ios`, `jk_ocr_camera`.
+2. Ghi `CHANGELOG.md` của từng package.
+3. Nếu sửa SDK native: chạy `tool/sync_native.sh` (mục trên). Nếu SDK Android đổi version, sửa thêm dòng
+   `com.jk.ocr:ocr-scanner:x.y.z` trong `jk_ocr_camera_android/android/build.gradle.kts`.
+4. Kiểm tra:
 
    ```sh
-   git tag v0.1.0
+   flutter pub get
+   flutter analyze
+   (cd jk_ocr_camera_platform_interface && flutter test)
+   ```
+
+5. Commit, rồi chạy thử từng package (không có lỗi mới được publish):
+
+   ```sh
+   (cd jk_ocr_camera_platform_interface && dart pub publish --dry-run)
+   ```
+
+6. Publish **đúng thứ tự** (package sau phụ thuộc package trước):
+
+   ```sh
+   (cd jk_ocr_camera_platform_interface && dart pub publish)
+   (cd jk_ocr_camera_android && dart pub publish)
+   (cd jk_ocr_camera_ios && dart pub publish)
+   (cd jk_ocr_camera && dart pub publish)
+   ```
+
+7. Gắn tag và push:
+
+   ```sh
+   git tag v1.0.0
    git push origin main --tags
    ```
 
-App dùng plugin ghim `ref: v0.1.0` để không bị đổi bất ngờ khi nhánh `main` thay đổi.
+> Version đã publish lên pub.dev **không xoá được** (chỉ có thể "retract" trong 7 ngày). Luôn chạy `--dry-run` trước.

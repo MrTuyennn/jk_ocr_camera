@@ -1,0 +1,132 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.jk.ocr",
+    "module": "ocr-camera",
+    "version": "1.0.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.3.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.camera",
+          "module": "camera-core",
+          "version": {
+            "requires": "1.4.2"
+          }
+        },
+        {
+          "group": "androidx.camera",
+          "module": "camera-lifecycle",
+          "version": {
+            "requires": "1.4.2"
+          }
+        },
+        {
+          "group": "androidx.camera",
+          "module": "camera-view",
+          "version": {
+            "requires": "1.4.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.2.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ocr-camera-1.0.0.aar",
+          "url": "ocr-camera-1.0.0.aar",
+          "size": 35971,
+          "sha512": "281c3ab6378b97ea32b2797a03ed88ee80efdbf53d3057fc16cb2e09e1ca32aa8e5bb999847b56d96bc2280bdd5a54948fd089c3909c31c537c2fce32b6c89c2",
+          "sha256": "41a748e2199a4550c6ea42290493e5cdeec49fb37d7676c6b616f022996be82a",
+          "sha1": "ba490428c42d2ffdb503e3ffb14f337ca23d7b08",
+          "md5": "e6e09777e42d2cb0ec2858f9fe4990fe"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.16.0"
+          }
+        },
+        {
+          "group": "androidx.camera",
+          "module": "camera-camera2",
+          "version": {
+            "requires": "1.4.2"
+          }
+        },
+        {
+          "group": "androidx.camera",
+          "module": "camera-core",
+          "version": {
+            "requires": "1.4.2"
+          }
+        },
+        {
+          "group": "androidx.camera",
+          "module": "camera-lifecycle",
+          "version": {
+            "requires": "1.4.2"
+          }
+        },
+        {
+          "group": "androidx.camera",
+          "module": "camera-view",
+          "version": {
+            "requires": "1.4.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.2.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ocr-camera-1.0.0.aar",
+          "url": "ocr-camera-1.0.0.aar",
+          "size": 35971,
+          "sha512": "281c3ab6378b97ea32b2797a03ed88ee80efdbf53d3057fc16cb2e09e1ca32aa8e5bb999847b56d96bc2280bdd5a54948fd089c3909c31c537c2fce32b6c89c2",
+          "sha256": "41a748e2199a4550c6ea42290493e5cdeec49fb37d7676c6b616f022996be82a",
+          "sha1": "ba490428c42d2ffdb503e3ffb14f337ca23d7b08",
+          "md5": "e6e09777e42d2cb0ec2858f9fe4990fe"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+# Pub workspace cho phát triển trong repo (Dart 3.6+). KHÔNG publish file này.
+# Chạy `flutter pub get` một lần ở đây là đủ cho cả 4 package + example: các phụ thuộc
+# `jk_ocr_camera_*: ^1.0.0` được lấy ngay trong repo thay vì tải từ pub.dev.
+name: jk_ocr_camera_workspace
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+workspace:
+  - jk_ocr_camera_platform_interface
+  - jk_ocr_camera_android
+  - jk_ocr_camera_ios
+  - jk_ocr_camera
+  - jk_ocr_camera/example
