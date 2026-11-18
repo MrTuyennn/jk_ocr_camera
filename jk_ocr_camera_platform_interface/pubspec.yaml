@@ -1,0 +1,21 @@
+name: jk_ocr_camera_platform_interface
+description: Platform interface chung cho plugin jk_ocr_camera (quét + OCR giấy tờ tùy thân Việt Nam, offline).
+version: 0.1.0
+homepage: https://github.com/MrTuyennn/jk_ocr_camera
+repository: https://github.com/MrTuyennn/jk_ocr_camera/tree/main/jk_ocr_camera_platform_interface
+issue_tracker: https://github.com/MrTuyennn/jk_ocr_camera/issues
+publish_to: none
+
+environment:
+  sdk: ^3.5.0
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.1.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0

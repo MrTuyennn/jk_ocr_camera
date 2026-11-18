@@ -1,0 +1,34 @@
+name: jk_ocr_camera
+description: Quét giấy tờ tùy thân Việt Nam (CCCD, CMND, hộ chiếu, GPLX) và OCR offline. Android (ML Kit bundled) + iOS (Apple Vision).
+version: 0.1.0
+homepage: https://github.com/MrTuyennn/jk_ocr_camera
+repository: https://github.com/MrTuyennn/jk_ocr_camera/tree/main/jk_ocr_camera
+issue_tracker: https://github.com/MrTuyennn/jk_ocr_camera/issues
+publish_to: none
+
+environment:
+  sdk: ^3.5.0
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  jk_ocr_camera_platform_interface:
+    path: ../jk_ocr_camera_platform_interface
+  jk_ocr_camera_android:
+    path: ../jk_ocr_camera_android
+  jk_ocr_camera_ios:
+    path: ../jk_ocr_camera_ios
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: jk_ocr_camera_android
+      ios:
+        default_package: jk_ocr_camera_ios

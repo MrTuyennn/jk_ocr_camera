@@ -1,0 +1,10 @@
+.dart_tool/
+.packages
+build/
+pubspec.lock
+.idea/
+*.iml
+.flutter-plugins-dependencies
+android/.gradle/
+android/local.properties
+# android/maven/ PHẢI commit: đó là SDK native (sinh bởi tool/sync_native.sh).

@@ -1,0 +1,30 @@
+name: jk_ocr_camera_ios
+description: Hiện thực iOS của plugin jk_ocr_camera (Apple Vision, AVFoundation, offline).
+version: 0.1.0
+homepage: https://github.com/MrTuyennn/jk_ocr_camera
+repository: https://github.com/MrTuyennn/jk_ocr_camera/tree/main/jk_ocr_camera_ios
+issue_tracker: https://github.com/MrTuyennn/jk_ocr_camera/issues
+publish_to: none
+
+environment:
+  sdk: ^3.5.0
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  jk_ocr_camera_platform_interface:
+    path: ../jk_ocr_camera_platform_interface
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  plugin:
+    implements: jk_ocr_camera
+    platforms:
+      ios:
+        pluginClass: JkOcrCameraPlugin
+        dartPluginClass: JkOcrCameraIOS

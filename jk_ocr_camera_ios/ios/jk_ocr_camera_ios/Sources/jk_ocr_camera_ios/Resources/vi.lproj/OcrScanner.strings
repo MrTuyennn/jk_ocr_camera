@@ -1,0 +1,22 @@
+/* Theo bảng case đã thống nhất (cùng tên với string resource Android). */
+"ekyc_error_blur" = "Giấy tờ mờ nhòe. Vui lòng đặt giấy tờ trên mặt phẳng và giữ yên giấy tờ khi chụp";
+"ekyc_title_card_blur" = "Hãy giữ yên";
+"ekyc_error_card_top" = "Giấy tờ bị lệch trên. Vui lòng đặt giấy tờ thẳng góc với khung chụp";
+"ekyc_error_card_bottom" = "Giấy tờ bị lệch dưới. Vui lòng đặt giấy tờ thẳng góc với khung chụp";
+"ekyc_error_card_left" = "Giấy tờ bị lệch trái. Vui lòng đặt giấy tờ thẳng góc với khung chụp";
+"ekyc_error_card_right" = "Giấy tờ bị lệch phải. Vui lòng đặt giấy tờ thẳng góc với khung chụp";
+"ekyc_error_no_card" = "Vui lòng đưa giấy tờ vào trong khung hình";
+"ekyc_title_wobbly" = "Vui lòng đặt Giấy tờ thẳng góc, không bị xô lệch khi chụp";
+
+/* Bổ sung cho các case còn lại của SDK. */
+"ekyc_error_dark" = "Không quét được thông tin, vui lòng đặt giấy tờ ở nơi có ánh sáng phù hợp";
+"ekyc_error_bright" = "Ảnh quá sáng, vui lòng tránh nguồn sáng chiếu trực tiếp vào giấy tờ";
+"ekyc_error_glare" = "Giấy tờ bị lóa sáng, vui lòng nghiêng nhẹ giấy tờ để tránh phản chiếu";
+"ekyc_error_too_close" = "Giấy tờ bị cắt góc. Vui lòng đưa giấy tờ ra xa hơn một chút";
+"ekyc_error_too_far" = "Giấy tờ ở quá xa. Vui lòng đưa giấy tờ lại gần hơn";
+"ekyc_error_read_failed" = "Không đọc được thông tin trên giấy tờ, vui lòng thử lại";
+"ekyc_title_card_ready" = "Giấy tờ đã nằm đúng khung, nhấn Chụp ảnh";
+"ekyc_title_hold_still" = "Giữ yên giấy tờ trong giây lát...";
+"ekyc_title_reading" = "Đang đọc thông tin, giữ yên giấy tờ...";
+"ekyc_title_front_side" = "Mặt trước giấy tờ";
+"ekyc_title_back_side" = "Mặt sau giấy tờ";

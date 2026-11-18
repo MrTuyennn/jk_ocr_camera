@@ -1,0 +1,39 @@
+# macOS / IDE
+.DS_Store
+.idea/
+*.iml
+.vscode/
+
+# Dart / Flutter
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.lock
+pubspec_overrides.yaml
+
+# Android
+.gradle/
+local.properties
+.kotlin/
+*.keystore
+*.jks
+
+# iOS
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/.last_build_id
+xcuserdata/
+DerivedData/
+.build/
+.swiftpm/
+
+# QUAN TRỌNG: KHÔNG ignore 2 thư mục sau, đó là SDK native đã đóng gói (sinh bởi tool/sync_native.sh):
+#   jk_ocr_camera_android/android/maven/
+#   jk_ocr_camera_ios/ios/jk_ocr_camera_ios/Sources/jk_ocr_camera_ios/OcrSdk/ (+ Resources/)
