@@ -36,8 +36,9 @@ final class VisionCardDetector {
         request.maximumAspectRatio = 0.8
         request.minimumSize = 0.25
         request.quadratureTolerance = 20
-        request.minimumConfidence = 0.5
-        request.maximumObservations = 4
+        request.minimumConfidence = 0.4
+        // Nền rối khi cầm tay có nhiều hình chữ nhật (màn hình, khung tranh...): lấy nhiều ứng viên rồi chọn.
+        request.maximumObservations = 10
     }
 
     /// - Returns: hình bao thẻ theo **px buffer** (gốc trên-trái), độ tin cậy, độ xô lệch (độ), hoặc nil.
@@ -54,19 +55,33 @@ final class VisionCardDetector {
         for obs in request.results ?? [] {
             let rect = visionRectToPixels(obs.boundingBox, width: w, height: h)
             guard rect.height > 0 else { continue }
-            let aspect = rect.width / rect.height
+            // Tỉ lệ theo độ dài cạnh thật của tứ giác, KHÔNG theo hình bao: thẻ xoay làm hình bao "vuông" ra
+            // (vd. xoay 13° → bao ~1.33) và bị loại nhầm.
+            let aspect = Self.sideAspect(obs, w, h)
             guard aspect >= params.minAspect, aspect <= params.maxAspect,
                   rect.width >= guide.width * params.minWidthCoverage,
                   // Tâm thẻ phải nằm trong ô; góc không được sát mép ảnh.
                   guide.contains(CGPoint(x: rect.midX, y: rect.midY)),
                   bounds.contains(rect) else { continue }
-            // Ưu tiên ứng viên có tâm gần tâm ô và độ tin cậy cao.
+            // Ưu tiên: tâm gần tâm ô, tỉ lệ gần thẻ ID-1 (1.586), độ tin cậy cao.
             let dx = Float((rect.midX - guide.midX) / guide.width)
             let dy = Float((rect.midY - guide.midY) / guide.height)
-            let score = obs.confidence * (1 - min(1, (dx * dx + dy * dy).squareRoot()))
+            let centerScore = 1 - min(1, (dx * dx + dy * dy).squareRoot())
+            let aspectScore = max(0.2, 1 - abs(Float(aspect) - 1.586) / 0.35)
+            let score = obs.confidence * centerScore * aspectScore
             if best == nil || score > best!.score { best = (rect, obs.confidence, Self.skewDegrees(obs, w, h), score) }
         }
         return best.map { ($0.rect, $0.confidence, $0.skew) }
+    }
+
+    /// Tỉ lệ (trung bình cạnh trên/dưới) / (trung bình cạnh trái/phải), tính trong không gian pixel.
+    static func sideAspect(_ o: VNRectangleObservation, _ w: CGFloat, _ h: CGFloat) -> CGFloat {
+        func p(_ n: CGPoint) -> CGPoint { CGPoint(x: n.x * w, y: (1 - n.y) * h) }
+        func dist(_ a: CGPoint, _ b: CGPoint) -> CGFloat { hypot(b.x - a.x, b.y - a.y) }
+        let tl = p(o.topLeft), tr = p(o.topRight), bl = p(o.bottomLeft), br = p(o.bottomRight)
+        let horizontal = (dist(tl, tr) + dist(bl, br)) / 2
+        let vertical = (dist(tl, bl) + dist(tr, br)) / 2
+        return vertical > 0 ? horizontal / vertical : 0
     }
 
     /// Góc lệch lớn nhất của 4 cạnh so với phương ngang (cạnh trên/dưới) và dọc (cạnh trái/phải), tính

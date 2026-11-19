@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'jk_ocr_camera_ios'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'iOS implementation of jk_ocr_camera: offline ID card scanning + OCR (Apple Vision).'
   s.description      = 'Quét giấy tờ tùy thân Việt Nam và OCR offline bằng Apple Vision, AVFoundation.'
   s.homepage         = 'https://github.com/MrTuyennn/jk_ocr_camera'

@@ -85,7 +85,9 @@ public struct IdCardScannerConfig {
     /// Lưu ảnh khung hình + ảnh cắt theo thẻ vào `Caches/jk_ocr/` khi chụp.
     public var saveImages = true
     /// Chất lượng JPEG 0..1.
-    public var jpegQuality: CGFloat = 0.9
+    public var jpegQuality: CGFloat = 0.95
+    /// Dung lượng tối đa (byte) mỗi ảnh JPEG. 0 = không giới hạn.
+    public var maxImageBytes = 5 * 1024 * 1024
 
     public init() {}
 }

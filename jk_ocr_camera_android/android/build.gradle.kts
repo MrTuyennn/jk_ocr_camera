@@ -1,5 +1,5 @@
 group = "com.jk.ocr.flutter"
-version = "1.0.0"
+version = "1.0.1"
 
 buildscript {
     val kotlinVersion = "2.4.0"
@@ -63,5 +63,5 @@ kotlin {
 }
 
 dependencies {
-    implementation("com.jk.ocr:ocr-scanner:1.0.0")
+    implementation("com.jk.ocr:ocr-scanner:1.0.1")
 }

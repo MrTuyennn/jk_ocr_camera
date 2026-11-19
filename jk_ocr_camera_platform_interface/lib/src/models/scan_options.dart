@@ -16,11 +16,13 @@ class ScanOptions {
     this.captureMode = CaptureMode.manual,
     this.readQr = true,
     this.saveImages = true,
-    this.jpegQuality = 90,
+    this.jpegQuality = 95,
+    this.maxImageBytes = 5 * 1024 * 1024,
     this.edgeTolerance = 0.04,
     this.minWidthRatio = 0.6,
     this.maxSkewDegrees = 5,
   })  : assert(jpegQuality >= 1 && jpegQuality <= 100),
+        assert(maxImageBytes >= 0),
         assert(edgeTolerance >= 0 && edgeTolerance <= 0.5),
         assert(minWidthRatio > 0 && minWidthRatio <= 1),
         assert(maxSkewDegrees >= 0);
@@ -35,6 +37,10 @@ class ScanOptions {
 
   /// Chất lượng JPEG 1..100.
   final int jpegQuality;
+
+  /// Dung lượng tối đa (byte) của MỖI ảnh JPEG lưu ra. Mặc định 5 MB. `0` = không giới hạn.
+  /// Ảnh vượt mức này sẽ được giảm chất lượng dần (tối thiểu ~50), nếu vẫn lớn thì thu nhỏ kích thước.
+  final int maxImageBytes;
 
   /// Cho phép giấy tờ lấn ra ngoài khung tối đa bấy nhiêu (tỉ lệ kích thước khung).
   /// Lấn nhiều hơn → báo lệch trên / dưới / trái / phải.
@@ -51,6 +57,7 @@ class ScanOptions {
         'readQr': readQr,
         'saveImages': saveImages,
         'jpegQuality': jpegQuality,
+        'maxImageBytes': maxImageBytes,
         'placement': <String, Object?>{
           'edgeTolerance': edgeTolerance,
           'minWidthRatio': minWidthRatio,

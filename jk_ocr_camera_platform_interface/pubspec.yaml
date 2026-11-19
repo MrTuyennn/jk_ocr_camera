@@ -1,6 +1,6 @@
 name: jk_ocr_camera_platform_interface
 description: A common platform interface for the jk_ocr_camera plugin (offline Vietnamese ID card scanning and OCR).
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/MrTuyennn/jk_ocr_camera
 repository: https://github.com/MrTuyennn/jk_ocr_camera/tree/main/jk_ocr_camera_platform_interface
 issue_tracker: https://github.com/MrTuyennn/jk_ocr_camera/issues

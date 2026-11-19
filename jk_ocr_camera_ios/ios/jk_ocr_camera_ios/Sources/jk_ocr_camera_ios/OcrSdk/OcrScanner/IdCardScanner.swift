@@ -33,6 +33,13 @@ public final class IdCardScanner {
     public var textRecognitionLanguages: [String] { textReader.languages }
 
     private let cardDetector = VisionCardDetector()
+    /// Dự phòng khi Vision không thấy thẻ (vd. ngón tay che góc): dò biên trên ảnh xám.
+    private let edgeDetector = EdgeCardDetector()
+    private let tracker = CardTracker()
+    /// Số khung liên tiếp mà chỉ detector biên (không phải Vision) thấy thẻ. Đủ `edgeFallbackMinStreak` mới tin.
+    private var edgeStreak = 0
+    private let edgeFallbackMinStreak = 3
+    private let edgeFallbackMinConfidence: Float = 0.65
     private lazy var ciContext = CIContext()
     private let textReader = VisionTextReader()
     private let engine: ScanDecisionEngine
@@ -101,6 +108,8 @@ public final class IdCardScanner {
         if f.resetRequested {
             flags.update { $0.resetRequested = false }
             engine.reset()
+            tracker.reset()
+            edgeStreak = 0
         }
         guard !f.paused, ProcessInfo.processInfo.systemUptime >= f.holdUntil,
               let buffer = CMSampleBufferGetImageBuffer(sampleBuffer),
@@ -119,7 +128,39 @@ public final class IdCardScanner {
         guard !roi.isNull, roi.width > 0,
               let gray = PixelBufferSampler.gray(from: buffer, roi: roi, outWidth: analysisWidth) else { return }
 
-        let detected = cardDetector.detect(in: buffer, guide: guide)
+        let guideInRoi = NormRect(guide, relativeTo: roi)
+        // 1) Vision (cần thấy 4 góc). 2) Dự phòng: dò biên (chịu được ngón tay che góc / giữa cạnh).
+        let fromVision = cardDetector.detect(in: buffer, guide: guide)
+        var freshDetection = fromVision
+        if fromVision == nil {
+            // Dự phòng lỏng hơn Vision nên cần tin cậy cao và ổn định vài khung liên tiếp (tránh nhận nhầm tờ giấy, điện thoại...).
+            if let d = edgeDetector.detect(gray, guide: guideInRoi), d.confidence >= edgeFallbackMinConfidence {
+                edgeStreak += 1
+                if edgeStreak >= edgeFallbackMinStreak {
+                    freshDetection = (rect: CGRect(x: roi.minX + CGFloat(d.bounds.left) * roi.width,
+                                                   y: roi.minY + CGFloat(d.bounds.top) * roi.height,
+                                                   width: CGFloat(d.bounds.width) * roi.width,
+                                                   height: CGFloat(d.bounds.height) * roi.height),
+                                      confidence: d.confidence, skewDegrees: d.skewDegrees)
+                }
+            } else {
+                edgeStreak = 0
+            }
+        } else {
+            edgeStreak = 0
+        }
+        // Bám theo thẻ: trượt 1–3 khung khi cầm tay không làm trạng thái nhảy. Chụp thì cần thẻ thật ở khung này.
+        let trackedCard = tracker.update(freshDetection.map {
+            CardDetection(bounds: NormRect($0.rect, relativeTo: roi), confidence: $0.confidence, skewDegrees: $0.skewDegrees)
+        })
+        let fresh = tracker.isFresh
+        let detected = trackedCard.map { c in
+            (rect: CGRect(x: roi.minX + CGFloat(c.bounds.left) * roi.width,
+                          y: roi.minY + CGFloat(c.bounds.top) * roi.height,
+                          width: CGFloat(c.bounds.width) * roi.width,
+                          height: CGFloat(c.bounds.height) * roi.height),
+             confidence: c.confidence, skewDegrees: c.skewDegrees)
+        }
         let card = detected.map {
             CardDetection(bounds: NormRect($0.rect, relativeTo: roi), confidence: $0.confidence, skewDegrees: $0.skewDegrees)
         }
@@ -138,10 +179,10 @@ public final class IdCardScanner {
         let shouldCapture: Bool
         if manual {
             // Chỉ chụp khung mà chính nó đạt (không dựa vào trạng thái đã chống nhấp nháy).
-            shouldCapture = requested && card != nil
+            shouldCapture = requested && fresh && card != nil
                 && engine.classify(quality: quality, card: card, placement: placement) == .none
         } else {
-            shouldCapture = decision.readyToCapture
+            shouldCapture = decision.readyToCapture && fresh
         }
 
         if shouldCapture {
@@ -152,7 +193,7 @@ public final class IdCardScanner {
             // Đã bấm, chờ khung đạt kế tiếp (thường chỉ 1–2 khung).
             post(.success(config.messages.reading), showButton: false)
         } else {
-            post(state(for: decision.issue), showButton: manual && decision.issue == .none,
+            post(state(for: decision.issue), showButton: manual && decision.issue == .none && fresh,
                  subtitleOverride: decision.issue == .blurry ? config.messages.blurryTitle : nil)
         }
     }
@@ -237,12 +278,36 @@ public final class IdCardScanner {
         let h = image.extent.height
         let stamp = Int(Date().timeIntervalSince1970 * 1000)
         let space = CGColorSpace(name: CGColorSpace.sRGB) ?? CGColorSpaceCreateDeviceRGB()
-        let opts: [CIImageRepresentationOption: Any] = [
-            CIImageRepresentationOption(rawValue: kCGImageDestinationLossyCompressionQuality as String): config.jpegQuality,
-        ]
+
+        func encode(_ img: CIImage, quality: CGFloat) -> Data? {
+            let opts: [CIImageRepresentationOption: Any] = [
+                CIImageRepresentationOption(rawValue: kCGImageDestinationLossyCompressionQuality as String): quality,
+            ]
+            return ciContext.jpegRepresentation(of: img, colorSpace: space, options: opts)
+        }
+
+        /// Nén theo `jpegQuality`; vượt `maxImageBytes` thì hạ chất lượng dần (>= 0.5), vẫn lớn thì thu nhỏ kích thước.
+        func encodeLimited(_ source: CIImage) -> Data? {
+            var img = source
+            let limit = config.maxImageBytes
+            var q = min(max(config.jpegQuality, 0.01), 1)
+            var data = encode(img, quality: q)
+            guard limit > 0 else { return data }
+            var scaleSteps = 0
+            while let d = data, d.count > limit, scaleSteps < 6 {
+                if q > 0.5 {
+                    q = max(0.5, q - 0.05)
+                } else {
+                    img = img.transformed(by: CGAffineTransform(scaleX: 0.85, y: 0.85))
+                    scaleSteps += 1
+                }
+                data = encode(img, quality: q)
+            }
+            return data
+        }
 
         func write(_ img: CIImage, _ name: String) -> String? {
-            guard let data = ciContext.jpegRepresentation(of: img, colorSpace: space, options: opts) else { return nil }
+            guard let data = encodeLimited(img) else { return nil }
             let url = dir.appendingPathComponent(name)
             return (try? data.write(to: url)) != nil ? url.path : nil
         }

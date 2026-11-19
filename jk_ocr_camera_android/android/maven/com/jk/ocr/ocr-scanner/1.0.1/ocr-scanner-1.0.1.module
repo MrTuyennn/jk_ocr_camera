@@ -1,0 +1,125 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.jk.ocr",
+    "module": "ocr-scanner",
+    "version": "1.0.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.3.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.jk.ocr",
+          "module": "ocr-core",
+          "version": {
+            "requires": "1.0.1"
+          }
+        },
+        {
+          "group": "com.jk.ocr",
+          "module": "ocr-camera",
+          "version": {
+            "requires": "1.0.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.2.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ocr-scanner-1.0.1.aar",
+          "url": "ocr-scanner-1.0.1.aar",
+          "size": 51261,
+          "sha512": "9915aed7e3b50982a9a06013b1b11ce6d06bc424d0d7c1ab1fbb0084fd646b5c26b655b8ef6fcc618cf831c87d4cd2e01881ad52c15fbe6c17db3bea7977b411",
+          "sha256": "23ba64f55a85257836207e64370b7f21f8e04ab1e5ff716c7d8844040646fde7",
+          "sha1": "d3d0b3ba464e64c89fe7eff0033702567cfa9ad0",
+          "md5": "cb16b3b4d53843d9166dd1bdf3891e26"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.activity",
+          "module": "activity-ktx",
+          "version": {
+            "requires": "1.10.1"
+          }
+        },
+        {
+          "group": "com.google.mlkit",
+          "module": "text-recognition",
+          "version": {
+            "requires": "16.0.1"
+          }
+        },
+        {
+          "group": "com.google.mlkit",
+          "module": "barcode-scanning",
+          "version": {
+            "requires": "17.3.0"
+          }
+        },
+        {
+          "group": "com.jk.ocr",
+          "module": "ocr-core",
+          "version": {
+            "requires": "1.0.1"
+          }
+        },
+        {
+          "group": "com.jk.ocr",
+          "module": "ocr-camera",
+          "version": {
+            "requires": "1.0.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.2.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ocr-scanner-1.0.1.aar",
+          "url": "ocr-scanner-1.0.1.aar",
+          "size": 51261,
+          "sha512": "9915aed7e3b50982a9a06013b1b11ce6d06bc424d0d7c1ab1fbb0084fd646b5c26b655b8ef6fcc618cf831c87d4cd2e01881ad52c15fbe6c17db3bea7977b411",
+          "sha256": "23ba64f55a85257836207e64370b7f21f8e04ab1e5ff716c7d8844040646fde7",
+          "sha1": "d3d0b3ba464e64c89fe7eff0033702567cfa9ad0",
+          "md5": "cb16b3b4d53843d9166dd1bdf3891e26"
+        }
+      ]
+    }
+  ]
+}

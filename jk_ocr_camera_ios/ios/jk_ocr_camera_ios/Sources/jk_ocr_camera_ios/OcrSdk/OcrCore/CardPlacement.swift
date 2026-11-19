@@ -21,7 +21,7 @@ public struct PlacementRules: Equatable {
     public var minWidthRatio: Float
     public var maxSkewDegrees: Float
 
-    public init(edgeTolerance: Float = 0.04, minWidthRatio: Float = 0.6, maxSkewDegrees: Float = 5) {
+    public init(edgeTolerance: Float = 0.04, minWidthRatio: Float = 0.6, maxSkewDegrees: Float = 8) {
         self.edgeTolerance = edgeTolerance
         self.minWidthRatio = minWidthRatio
         self.maxSkewDegrees = maxSkewDegrees

@@ -26,14 +26,14 @@ flutter pub add jk_ocr_camera
 ## Phát triển trong repo
 
 Repo dùng **pub workspace** (`pubspec.yaml` ở gốc, Dart 3.6+). Các package phụ thuộc nhau theo version
-(`jk_ocr_camera_platform_interface: ^1.0.0`), nhưng trong workspace pub lấy luôn bản trong repo, không tải từ pub.dev.
+(`jk_ocr_camera_platform_interface: ^1.0.1`), nhưng trong workspace pub lấy luôn bản trong repo, không tải từ pub.dev.
 
 ### Lần đầu sau khi clone
 
 ```sh
 git clone https://github.com/MrTuyennn/jk_ocr_camera.git
 cd jk_ocr_camera
-flutter pub get          # một lần ở gốc là đủ cho cả 4 package + example
+flutter pub get
 ```
 
 ### Chạy app ví dụ

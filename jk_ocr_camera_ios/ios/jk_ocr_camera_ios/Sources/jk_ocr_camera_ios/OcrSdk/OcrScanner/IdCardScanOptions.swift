@@ -15,7 +15,7 @@ public enum CardSide: String {
 ///
 /// ```
 /// side: "front" | "back", title, subtitle, captureButtonText, captureMode: "manual" | "auto",
-/// readQr, saveImages, jpegQuality (1..100),
+/// readQr, saveImages, jpegQuality (1..100), maxImageBytes (byte, 0 = không giới hạn),
 /// placement: { edgeTolerance, minWidthRatio, maxSkewDegrees }, messages: { "ekyc_error_blur": "...", ... }
 /// ```
 public struct IdCardScanOptions {
@@ -27,7 +27,9 @@ public struct IdCardScanOptions {
     public var readQr = true
     public var saveImages = true
     /// 1..100 (giống Android).
-    public var jpegQuality = 90
+    public var jpegQuality = 95
+    /// Dung lượng tối đa mỗi ảnh (byte); 0 = không giới hạn.
+    public var maxImageBytes = 5 * 1024 * 1024
     public var placement = PlacementRules()
     public var messageOverrides: [String: String] = [:]
 
@@ -43,6 +45,7 @@ public struct IdCardScanOptions {
         if let v = d["readQr"] as? Bool { readQr = v }
         if let v = d["saveImages"] as? Bool { saveImages = v }
         if let v = d["jpegQuality"] as? NSNumber { jpegQuality = v.intValue }
+        if let v = d["maxImageBytes"] as? NSNumber { maxImageBytes = max(0, v.intValue) }
         if let p = d["placement"] as? [String: Any] {
             if let v = p["edgeTolerance"] as? NSNumber { placement.edgeTolerance = v.floatValue }
             if let v = p["minWidthRatio"] as? NSNumber { placement.minWidthRatio = v.floatValue }
@@ -61,6 +64,7 @@ public struct IdCardScanOptions {
         c.readQr = readQr
         c.saveImages = saveImages
         c.jpegQuality = CGFloat(min(max(jpegQuality, 1), 100)) / 100
+        c.maxImageBytes = maxImageBytes
         c.placement = placement
         c.messages = IdCardScannerMessages().withOverrides(messageOverrides)
         return c

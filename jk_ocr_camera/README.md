@@ -46,7 +46,7 @@ hoặc thêm thủ công vào `pubspec.yaml` của app:
 
 ```yaml
 dependencies:
-  jk_ocr_camera: ^1.0.0
+  jk_ocr_camera: ^1.0.1
 ```
 
 > Chỉ cần `jk_ocr_camera`. Ba package `jk_ocr_camera_platform_interface`, `jk_ocr_camera_android`,
@@ -193,7 +193,8 @@ final back = await camera.scanCard(side: CardSide.back);
 | `captureMode` | `CaptureMode` | `manual` | `manual`: hiện nút "Chụp ảnh" khi giấy tờ đúng khung. `auto`: tự chụp khi giấy tờ đúng khung và đứng yên. |
 | `readQr` | `bool` | `true` | Đọc QR (CCCD gắn chip có QR ở mặt trước). |
 | `saveImages` | `bool` | `true` | Lưu ảnh JPEG vào thư mục cache của app. |
-| `jpegQuality` | `int` | `90` | Chất lượng JPEG 1..100. |
+| `jpegQuality` | `int` | `95` | Chất lượng JPEG 1..100. |
+| `maxImageBytes` | `int` | `5242880` (5 MB) | Dung lượng tối đa mỗi ảnh lưu ra; vượt thì tự giảm chất lượng (>= 50) rồi thu nhỏ kích thước. `0` = không giới hạn. |
 | `edgeTolerance` | `double` | `0.04` | Cho phép giấy tờ lấn ra ngoài khung tối đa 4% (bù sai số). Lấn nhiều hơn → báo lệch trên/dưới/trái/phải. |
 | `minWidthRatio` | `double` | `0.6` | Giấy tờ phải rộng ít nhất 60% khung. Nhỏ hơn → báo "quá xa" (chữ nhỏ dễ đọc sai). |
 | `maxSkewDegrees` | `double` | `5` | Cạnh giấy tờ lệch quá 5° so với khung → báo "xô lệch". |
